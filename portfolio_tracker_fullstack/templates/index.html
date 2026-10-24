@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PortfolioPilot | Investment Tracker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">P</div><div><strong>PortfolioPilot</strong><small>INVESTMENT TRACKER</small></div></div>
+      <div class="nav-label">WORKSPACE</div>
+      <a class="nav-item active" href="#dashboard"><span>▦</span> Dashboard</a>
+      <a class="nav-item" href="#holdings"><span>◫</span> My holdings</a>
+      <a class="nav-item" href="/api/export"><span>⇩</span> Export CSV</a>
+      <div class="sidebar-note"><div class="note-icon">✦</div><strong>Stay on top of your portfolio</strong><p>Track your investment value, performance, and holdings in one place.</p></div>
+      <div class="sidebar-footer"><span class="status-dot"></span> Local portfolio storage</div>
+    </aside>
+
+    <main class="main-content" id="dashboard">
+      <header class="topbar">
+        <div><p class="eyebrow">OVERVIEW / PORTFOLIO</p><h1>Investment dashboard</h1><p class="subtitle">A clear view of your portfolio performance.</p></div>
+        <div class="top-actions"><span class="market-pill"><span class="status-dot"></span> Tracker ready</span><button class="btn btn-outline" id="refreshBtn">↻ Refresh prices</button><a class="btn btn-primary" href="/api/export">↓ Export CSV</a></div>
+      </header>
+
+      <section class="metric-grid">
+        <article class="metric-card"><div class="metric-top"><span>Total invested</span><span class="metric-icon purple">↗</span></div><div class="metric-value" id="investedValue">$0.00</div><div class="metric-foot">Your purchase cost</div></article>
+        <article class="metric-card"><div class="metric-top"><span>Current market value</span><span class="metric-icon blue">◈</span></div><div class="metric-value" id="marketValue">$0.00</div><div class="metric-foot">Based on saved prices</div></article>
+        <article class="metric-card"><div class="metric-top"><span>Total profit / loss</span><span class="metric-icon green">⌁</span></div><div class="metric-value" id="pnlValue">$0.00</div><div class="metric-foot"><span id="pnlPercent" class="mini-badge">0.00%</span> overall return</div></article>
+        <article class="metric-card"><div class="metric-top"><span>Holdings</span><span class="metric-icon orange">▤</span></div><div class="metric-value" id="holdingCount">0</div><div class="metric-foot">Recorded purchases</div></article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel holdings-panel" id="holdings">
+          <div class="panel-header"><div><h2>Your holdings</h2><p>Every purchase recorded in your portfolio.</p></div><span class="count-chip" id="tableCount">0 holdings</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ASSET</th><th>SHARES</th><th>BUY PRICE</th><th>CURRENT</th><th>MARKET VALUE</th><th>RETURN</th><th></th></tr></thead>
+              <tbody id="holdingsBody"><tr><td colspan="7" class="empty-state">Your portfolio is empty. Add your first holding to get started.</td></tr></tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="tableFootText">Add holdings to see your portfolio breakdown.</span><a href="/api/export">Download report ↗</a></div>
+        </article>
+
+        <article class="panel add-panel">
+          <div class="panel-header"><div><h2>Add a holding</h2><p>Record a stock purchase.</p></div><div class="add-symbol">＋</div></div>
+          <form id="holdingForm">
+            <label for="ticker">Stock ticker</label>
+            <div class="input-with-action"><input id="ticker" name="ticker" placeholder="e.g. AAPL" maxlength="15" required><button type="button" id="lookupBtn" class="lookup-btn">Lookup</button></div>
+            <div class="helper" id="tickerHelper">Use a ticker symbol such as AAPL or MSFT.</div>
+            <div class="form-row"><div><label for="buyPrice">Buy price ($)</label><input id="buyPrice" name="buy_price" type="number" min="0.01" step="0.01" placeholder="150.00" required></div><div><label for="quantity">Shares</label><input id="quantity" name="quantity" type="number" min="1" step="1" placeholder="10" required></div></div>
+            <label for="currentPrice">Current price ($) <span class="optional">optional if quote found</span></label>
+            <input id="currentPrice" name="current_price" type="number" min="0.01" step="0.01" placeholder="Auto lookup or enter manually">
+            <div class="helper">If automatic price lookup is unavailable, enter the current price here.</div>
+            <button class="btn btn-primary submit-btn" type="submit" id="submitBtn">＋ Add to portfolio</button>
+            <div class="form-message" id="formMessage" role="status"></div>
+          </form>
+          <div class="form-divider"></div>
+          <div class="source-info"><span class="source-icon">i</span><p><strong>Price data note</strong><br>Sample prices are illustrative. Live quotes require internet access and the optional yfinance package.</p></div>
+        </article>
+      </section>
+
+      <footer class="page-footer"><span>PortfolioPilot · Personal investment tracking</span><span>Prices are informational and may be delayed. Not financial advice.</span></footer>
+    </main>
+  </div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

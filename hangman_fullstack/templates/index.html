@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hangman — Word Challenge</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head><body>
+<main class="shell">
+<header class="top"><a class="logo" href="/"><b>H</b> word<span>play</span></a><small>● DAILY BRAIN BREAK</small></header>
+<section class="hero"><p>THE CLASSIC WORD GAME</p><h1>Guess the word.<br><em>Save the stick figure.</em></h1>
+<div>Find the hidden word one letter at a time. You have six chances — make them count.</div></section>
+<section class="card">
+<div class="topline"><span>ROUND <b id="round">01</b></span><span class="pill">♥ <b id="remaining">{{ state.remaining }}</b> attempts left</span></div>
+<div class="grid">
+<section class="drawing"><div class="label">HANGMAN STATUS <b id="badge">IN PROGRESS</b></div><pre id="art">{{ state.stage }}</pre>
+<div class="progress"><span><b id="mistakes">{{ state.mistakes }}</b> / 6 mistakes</span><div><i id="fill" style="width:{{ state.mistakes / 6 * 100 }}%"></i></div></div></section>
+<section class="playing"><div class="label">HIDDEN WORD <span id="length">{{ state.word_display.replace(' ', '')|length }} LETTERS</span></div>
+<div id="word" class="word">{{ state.word_display }}</div><p class="hint">Choose a letter to reveal part of the word.</p>
+<h4>PICK A LETTER</h4><div id="keyboard" class="keyboard">
+{% for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" %}<button class="key" data-letter="{{ letter }}">{{ letter }}</button>{% endfor %}
+</div><div class="wrongline"><b>WRONG GUESSES</b><span id="wrong">—</span></div></section></div>
+<div id="message" class="message" role="status" aria-live="polite">You’ve got this. Start guessing!</div>
+<div class="actions"><button id="new">↻ &nbsp; New Game</button><p>Tip: start with common letters like <b>E, A, R, S, T</b>.</p></div>
+</section><footer>MADE FOR CURIOUS MINDS · A LITTLE WORD CHALLENGE</footer>
+</main>
+<script>window.initialState = {{ state|tojson }};</script><script src="{{ url_for('static', filename='script.js') }}"></script>
+</body></html>
